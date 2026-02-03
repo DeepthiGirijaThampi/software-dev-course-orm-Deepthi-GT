@@ -2,6 +2,7 @@ package com.example.orm_exercise.controllers;
 
 import com.example.orm_exercise.models.Contact;
 import com.example.orm_exercise.repositories.ContactRepository;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class ContactController {
 
     @PostMapping
     public Contact createContact(@RequestBody Contact contact) {
+        if (contact.getAddresses() != null) {
+            contact.getAddresses().forEach(a -> a.setContact(contact));
+        }
         return contactRepository.save(contact);
     }
 
@@ -44,4 +48,5 @@ public class ContactController {
     public void deleteContact(@PathVariable int id) {
         contactRepository.deleteById(id);
     }
+
 }
